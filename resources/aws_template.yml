@@ -1,0 +1,159 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 
+  'Launches EC2 instance for WebApp "Roman Numerals Converter". allows HTTP.'
+
+Parameters:
+  KeyPairParameter:
+    Description: Select a valid key pair.
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    Default: myAWSPracticeKeyPair
+
+
+Resources:
+  EC2WebServerNumeralConverter:
+    Type: AWS::EC2::Instance
+    Properties:
+      # AdditionalInfo: "String"
+      # Affinity: "String"
+      # AvailabilityZone: "String"
+      # BlockDeviceMappings: 
+      #   - DeviceName: "String"
+      #     Ebs:
+      #       DeleteOnTermination: false
+      #       Encrypted: false
+      #       Iops: "Number"
+      #       KmsKeyId: "String"
+      #       SnapshotId: "String"
+      #       VolumeSize: "Number"
+      #       VolumeType: "String"
+      #     NoDevice: "JSON"
+      #     VirtualName: "String"
+      # CpuOptions:
+      #   CoreCount: "Number"
+      #   ThreadsPerCore: "Number"
+      # CreditSpecification:
+      #   CPUCredits: "String"
+      # DisableApiTermination: false
+      # EbsOptimized: false
+      # ElasticGpuSpecifications: 
+      #   - Type: "String"
+      # ElasticInferenceAccelerators: 
+      #   - Count: "Number"
+      #     Type: "String"
+      # EnclaveOptions:
+      #   Enabled: false
+      # HibernationOptions:
+      #   Configured: false
+      # HostId: "String"
+      # HostResourceGroupArn: "String"
+      # IamInstanceProfile: "String"
+      ImageId: ami-0bdd88bd06d16ba03
+      # InstanceInitiatedShutdownBehavior: "String"
+      InstanceType: t3.micro
+      # Ipv6AddressCount: "Number"
+      # Ipv6Addresses: 
+      #   - Ipv6Address: "String"
+      # KernelId: "String"
+      KeyName: !Ref KeyPairParameter
+      # LaunchTemplate:
+      #   LaunchTemplateId: "String"
+      #   LaunchTemplateName: "String"
+      #   Version: "String"
+      # LicenseSpecifications: 
+      #   - LicenseConfigurationArn: "String"
+      # MetadataOptions:
+      #   HttpEndpoint: "String"
+      #   HttpProtocolIpv6: "String"
+      #   HttpPutResponseHopLimit: "Number"
+      #   HttpTokens: "String"
+      #   InstanceMetadataTags: "String"
+      # Monitoring: false
+      # NetworkInterfaces: 
+      #   - AssociateCarrierIpAddress: false
+      #     AssociatePublicIpAddress: false
+      #     DeleteOnTermination: false
+      #     Description: "String"
+      #     DeviceIndex: "String"
+      #     EnaSrdSpecification:
+      #       EnaSrdEnabled: false
+      #       EnaSrdUdpSpecification:
+      #         EnaSrdUdpEnabled: false
+      #     GroupSet:
+      #       - "String"
+      #     Ipv6AddressCount: "Number"
+      #     Ipv6Addresses:
+      #       - Ipv6Address: "String"
+      #     NetworkInterfaceId: "String"
+      #     PrivateIpAddress: "String"
+      #     PrivateIpAddresses:
+      #       - Primary: false
+      #         PrivateIpAddress: "String"
+      #     SecondaryPrivateIpAddressCount: "Number"
+      #     SubnetId: "String"
+      # PlacementGroupName: "String"
+      # PrivateDnsNameOptions:
+      #   EnableResourceNameDnsAAAARecord: false
+      #   EnableResourceNameDnsARecord: false
+      #   HostnameType: "String"
+      # PrivateIpAddress: "String"
+      # PropagateTagsToVolumeOnCreation: false
+      # RamdiskId: "String"
+      # SecurityGroupIds: 
+      #   - "String"
+      SecurityGroups: 
+         - !Ref SecurityGroupSshHttp
+      # SourceDestCheck: false
+      # SsmAssociations: 
+      #   - AssociationParameters:
+      #       - Key: "String"
+      #         Value:
+      #           - "String"
+      #     DocumentName: "String"
+      # SubnetId: "String"
+      Tags: 
+        - Key: Name
+          Value: Web Server of RomanNumeralConverter Stack
+      # Tenancy: "String"
+      UserData: 
+        !Base64 
+          !Sub
+        #!/bin/bash
+      # Volumes: 
+      #   - Device: "String"
+      #     VolumeId: "String"
+
+  SecurityGroupSshHttp:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Grants HTTP and SSH Access
+      GroupName: NameFor_SecurityGroup_SSH_HTTP
+      # SecurityGroupEgress: 
+      #   - CidrIp: "String"
+      #     CidrIpv6: "String"
+      #     Description: "String"
+      #     DestinationPrefixListId: "String"
+      #     DestinationSecurityGroupId: "String"
+      #     FromPort: "Number"
+      #     IpProtocol: "String"
+      #     ToPort: "Number"
+      SecurityGroupIngress: 
+        - CidrIp: 0.0.0.0/0
+          Description: ssh rule
+          FromPort: 22
+          IpProtocol: tcp
+          # SourcePrefixListId: "String"
+          # SourceSecurityGroupId: "String"
+          # SourceSecurityGroupName: "String"
+          # SourceSecurityGroupOwnerId: "String"
+          ToPort: 22
+        - CidrIp: 0.0.0.0/0
+          Description: http rule
+          FromPort: 80
+          IpProtocol: tcp          
+          ToPort: 80
+      # Tags: 
+      #   - Key: "String"
+      #     Value: "String"
+      # VpcId: "String"   
+
+  

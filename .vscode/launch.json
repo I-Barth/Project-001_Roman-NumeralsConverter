@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File (with input)",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            // *** This setting directs input/output to the Terminal ***
+            "console": "integratedTerminal", 
+            "justMyCode": true 
+        },
+        {
+            "name": "Python: Flask Manual Test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "app.py", // 👈 Make sure this points to your main file
+                "FLASK_ENV": "development"
+            },
+            "args": [
+                "run"
+            ],
+            "jinja": true, 
+            "justMyCode": true 
+        }        
+    ]
+}
