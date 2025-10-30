@@ -75,6 +75,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()       
+    serveWebApp()
+    # main()       # for manual testing of the logic without a web server
 
    

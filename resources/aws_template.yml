@@ -21,20 +21,21 @@ Resources:
       Tags: 
         - Key: Name
           Value: Web Server of RomanNumeralConverter Stack
-      UserData: 
-        !Base64 
-          !Sub |
-            #!/bin/bash
-            echo "Starting web service setup..." >> /tmp/user-data.log.
-            yum update -y
-            yum install git -y
-            cd /home/ec2-user
-            git clone https://github.com/I-Barth/Project-001_Roman-NumeralsConverter.git
-            sudo cp -r /home/ec2-user/Project-001_Roman-NumeralsConverter/* /var/www/html/
-            yum install -y python3 python3-pip
-            pip3 install Flask
-            nohup python3 /var/www/html/app.py --host 0.0.0.0 --port 8080 &
-            echo "Web service setup complete. Application running on port 8080." >> /tmp/user-data.log
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          exec >> /tmp/user-data.log 2>&1
+          echo "Starting web service setup for Flask app..."
+          mkdir -p /var/www/html/
+          yum update -y
+          yum install git -y
+          cd /home/ec2-user
+          git clone https://github.com/I-Barth/Project-001_Roman-NumeralsConverter.git
+          sudo cp -r /home/ec2-user/Project-001_Roman-NumeralsConverter/* /var/www/html/
+          yum install -y python3 python3-pip
+          pip3 install Flask
+          nohup python3 /var/www/html/app.py --host 0.0.0.0 --port 8080 &
+          echo "Web service setup complete. Application running on port 8080."
 
 
   SecurityGroupSshHttp:
