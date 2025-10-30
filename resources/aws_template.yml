@@ -101,7 +101,7 @@ Resources:
       # SecurityGroupIds: 
       #   - "String"
       SecurityGroups: 
-         - !Ref SecurityGroupSshHttp
+        - !Ref SecurityGroupSshHttp
       # SourceDestCheck: false
       # SsmAssociations: 
       #   - AssociationParameters:
@@ -116,11 +116,22 @@ Resources:
       # Tenancy: "String"
       UserData: 
         !Base64 
-          !Sub
-        #!/bin/bash
+          !Sub |
+            #!/bin/bash
+            echo "Starting web service setup..." >> /tmp/user-data.log.
+            yum update -y
+            yum install git -y
+            cd /home/ec2-user
+            git clone https://github.com/I-Barth/Project-001_Roman-NumeralsConverter.git
+            sudo cp -r /home/ec2-user/Project-001_Roman-NumeralsConverter/* /var/www/html/
+            yum install -y python3 python3-pip
+            pip3 install Flask
+            nohup python3 /var/www/html/app.py --host 0.0.0.0 --port 8080 &
+            echo "Web service setup complete. Application running on port 8080." >> /tmp/user-data.log
       # Volumes: 
       #   - Device: "String"
       #     VolumeId: "String"
+
 
   SecurityGroupSshHttp:
     Type: AWS::EC2::SecurityGroup
@@ -151,9 +162,21 @@ Resources:
           FromPort: 80
           IpProtocol: tcp          
           ToPort: 80
+        - CidrIp: 0.0.0.0/0
+          Description: http rule
+          FromPort: 8080
+          IpProtocol: tcp          
+          ToPort: 8080          
       # Tags: 
       #   - Key: "String"
       #     Value: "String"
-      # VpcId: "String"   
+      # VpcId: "String"     
+
+
+Outputs:
+  WebsiteURL:
+    Description: The URL for the Roman Numerals Converter
+    Value: !Sub 'http://${EC2WebServerNumeralConverter.PublicDnsName}'
+         
 
   
