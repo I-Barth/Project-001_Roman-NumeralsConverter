@@ -1,8 +1,0 @@
-// .vscode/settings.json
-{
-    // Sets the default terminal on Windows to Command Prompt
-    "terminal.integrated.defaultProfile.windows": "Command Prompt",
-    
-    // Forces the debug session to launch a new terminal instance
-    "terminal.integrated.cwd": "${fileDirname}" 
-}
