@@ -75,7 +75,7 @@ def main():
 
 
 if __name__ == "__main__":
-    serveWebApp()
+    app.run(host='0.0.0.0', port=8080)
     # main()       # for manual testing of the logic without a web server
 
    
